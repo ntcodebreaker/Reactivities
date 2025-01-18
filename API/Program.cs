@@ -1,5 +1,6 @@
 // configure and build a Kestrel Web Server
 using API.Extensions;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -14,6 +15,9 @@ var app = builder.Build();
 // Here is where middleware is configured in the way in and out 
 // of http requests and responses.
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
