@@ -47,7 +47,6 @@ axios.interceptors.response.use(async response => {
       router.navigate('/not-found')
       break;
     case 500:
-      console.log("asfjaosidfas");
       store.commonStore.setError(data);
       router.navigate('/server-error');
       break;
