@@ -1,3 +1,5 @@
+// Class to expose general information about an exception.
+
 namespace Application.Core
 {
     public class AppException

@@ -1,3 +1,8 @@
+/*
+ * Custom Exception middleware to centralize exception handling 
+ * Add this class as a middleware to catch exceptions in the HTTP requests
+ */
+
 using System.Net;
 using System.Text.Json;
 using Application.Core;

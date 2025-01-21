@@ -21,9 +21,9 @@ namespace API.Extensions
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
+            // allow all type of requests from our client app
             services.AddCors(opt =>
             {
-                // allow all type of requests from our client app
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
                     policy
@@ -33,10 +33,14 @@ namespace API.Extensions
                 });
             });
 
+            // register MediatR types to implement CQSR in controllers
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly));
 
+            // register mappers to convert objects from different types
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            
+            // register fluent validation to validate 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
 

@@ -1,3 +1,10 @@
+/*
+ * Custom base controller to expose a mediator object that can be used
+ * to invoke commands and queries on application layer using CQSR
+ * Centralize the logic to handle results from Application layer and 
+ * emit resposes to client based on that.
+ */
+
 using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
