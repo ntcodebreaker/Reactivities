@@ -13,6 +13,17 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
+// include token as a header in requests
+axios.interceptors.request.use(config => {
+  const token = store.commonStore.token;
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config;
+});
+
+// Let pass a second in every response to simulate a busy prod environment.
+// Handle rejections by navigating to other components of poping up toasts.
 axios.interceptors.response.use(async response => {
   await sleep(1000);
   return response;
