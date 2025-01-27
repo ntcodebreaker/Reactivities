@@ -11,5 +11,9 @@ namespace Domain
     {
         public string DisplayName { get; set; }
         public string Bio { get; set; }
+
+        // Used by EF in migrations to configure a 
+        // relationship between Activities and Attendees
+        public ICollection<ActivityAttendee> Activities { get; set; }
     }
 }
