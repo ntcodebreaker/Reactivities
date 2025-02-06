@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from 'mobx-react-lite'
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Activity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
@@ -16,20 +16,12 @@ import MyDateInput from "../../../app/common/form/MyDateInput";
 
 function ActivityForm() {
   const { activityStore } = useStore();
-  const { createActivity, updateActivity, loading,
+  const { createActivity, updateActivity, 
     loadActivity, loadingInitial } = activityStore;
 
   const navigate = useNavigate();
   const { id } = useParams();
-  const [activity, setActivity] = useState<Activity>({
-    id: '',
-    title: '',
-    category: '',
-    description: '',
-    date: null,
-    city: '',
-    venue: ''
-  });
+  const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
   const validationSchema = Yup.object({
     title: Yup.string().required("The activity title is required."),
@@ -42,11 +34,11 @@ function ActivityForm() {
 
   useEffect(() => {
     if (id) {
-      loadActivity(id).then(activity => setActivity(activity!));
+      loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)));
     }
   }, [id, loadActivity]);
 
-  function handleFormSubmit(activity: Activity) {
+  function handleFormSubmit(activity: ActivityFormValues) {
     if (!activity.id) {
       activity.id = uuid();
       createActivity(activity).then(() =>
@@ -69,9 +61,7 @@ function ActivityForm() {
         onSubmit={values => handleFormSubmit(values)}>
         {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off"
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}>
+            placeholder={undefined}>
             
             <MyTextInput name="title" placeholder="Title" />
             <MyTextArea rows={3} name="description" placeholder="Description" />
@@ -87,7 +77,7 @@ function ActivityForm() {
             <MyTextInput name="venue" placeholder="Venue" />
             <Button
               disabled={isSubmitting || !dirty || !isValid}
-              loading={loading} floated="right" positive type="submit" content="Submit" />
+              loading={isSubmitting} floated="right" positive type="submit" content="Submit" />
             <Button as={Link} to='/activities' floated="right" type="button" content="Cancel" />
           </Form>
         )}
