@@ -13,7 +13,11 @@ namespace Domain
         public string Bio { get; set; }
 
         // Used by EF in migrations to configure a 
-        // relationship between Activities and Attendees
+        // relationship many-to-many between AppUser and Activities
         public ICollection<ActivityAttendee> Activities { get; set; }
+
+        // Used by EF in migrations to configure a 
+        // relationship one-to-many between AppUser and Photos
+        public ICollection<Photo> Photos { get; set; }
     }
 }

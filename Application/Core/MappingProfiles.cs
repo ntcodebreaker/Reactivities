@@ -25,14 +25,26 @@ namespace Application.Core
              * and find the item with the IsHost flag
              */
             CreateMap<Activity, ActivityDto>()
-                .ForMember(d => d.HostUserName, 
+                .ForMember(d => d.HostUserName,
                     opts => opts.MapFrom(a => a.Attendees.FirstOrDefault(
                         aa => aa.IsHost).AppUser.UserName));
 
-            CreateMap<ActivityAttendee, Profiles.Profile>()
+            /*
+             * get the image for the AttendeeDto object by navigating to 
+             * the Photos and select the main one.
+             */
+            CreateMap<ActivityAttendee, AttendeeDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.AppUser.UserName))
-                .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio));
+                .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.AppUser.Photos.FirstOrDefault(p => p.IsMain).Url));
+
+            /*
+             * get the image for the Profile object by navigating to 
+             * the Photos and select the main one.
+             */
+            CreateMap<AppUser, Profiles.Profile>()
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(p => p.IsMain).Url));
         }
     }
 }

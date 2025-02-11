@@ -12,7 +12,7 @@ namespace Domain
         public bool IsCancelled { get; set; }
 
         // Used by EF in migrations to configure a 
-        // relationship between Activities and Attendees
+        // relationship many-to-many between Activity and AppUser
         public ICollection<ActivityAttendee> Attendees { get; set; } 
             = new List<ActivityAttendee>();
     }

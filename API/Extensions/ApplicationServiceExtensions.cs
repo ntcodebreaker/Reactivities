@@ -3,6 +3,7 @@ using Application.Core;
 using Application.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -41,7 +42,7 @@ namespace API.Extensions
 
             // register mappers to convert objects from different types
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            
+
             // register fluent validation to validate 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
@@ -49,6 +50,12 @@ namespace API.Extensions
             // add a default implementation to access the http context
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            // add a default implementation to manage the photo upload and removal
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+
+            // set up the cloudinary settings
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }
