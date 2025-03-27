@@ -10,9 +10,9 @@ body {
   activity details card does not fill its container 
   and looks weird compared to the activity form
 */
-.ui.card {
+/* .ui.card {
   width: 100% !important;
-}
+} */
 
 .react-calendar {
   width: 100%;
