@@ -29,12 +29,12 @@ export default class ProfileStore {
     this.loadingProfile = true;
     try {
       const profile = await agent.Profiles.get(username);
-      
+
       runInAction(() => {
         this.profile = profile;
         this.loadingProfile = false;
       })
-      
+
     } catch (error) {
       console.error(error);
       runInAction(() => this.loadingProfile = false);
@@ -65,7 +65,7 @@ export default class ProfileStore {
 
   setMainPhoto = async (photo: Photo) => {
     this.loading = true;
-    
+
     try {
       await agent.Profiles.setMainPhoto(photo.id);
       store.userStore.setImage(photo.url);
@@ -94,6 +94,24 @@ export default class ProfileStore {
         }
       })
 
+    } catch (error) {
+      console.error(error);
+      runInAction(() => this.loading = false);
+    }
+  }
+
+  updateProfile = async (profile: Partial<Profile>) => {
+    this.loading = true;
+    try {
+      await agent.Profiles.update(profile);
+      runInAction(() => {
+        if (profile.displayName && profile.displayName !== store.userStore.user?.displayName) {
+          store.userStore.setDisplayName(profile.displayName);
+        }
+
+        this.profile = { ...this.profile, ...profile as Profile };
+        this.loading = false;
+      })
     } catch (error) {
       console.error(error);
       runInAction(() => this.loading = false);

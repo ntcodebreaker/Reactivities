@@ -10,5 +10,18 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new Details.Query { Username = username }));
         }
+
+        /// <summary>
+        /// we can send a CQRS command directly to endpoints
+        /// the asp net binding mechanism will map the request data
+        /// to backend types.
+        /// </summary>
+        /// <param name="command">Partial profile information</param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> EditProfile(Edit.Command command)
+        {
+            return HandleResult(await Mediator.Send(command));
+        }
     }
 }

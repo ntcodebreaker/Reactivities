@@ -93,6 +93,8 @@ const Account = {
 
 const Profiles = {
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+
+  update: (profile: Partial<Profile>) => requests.put<void>("/profiles", profile),
   
   // needed a payload to put the blob and perform the request
   uploadPhoto: (file: Blob) => {
