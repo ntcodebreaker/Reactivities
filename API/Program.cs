@@ -1,6 +1,7 @@
 // configure and build a Kestrel Web Server
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// SignalR hub endpoint: server still needs to know where clients should connect
+app.MapHub<ChatHub>("/chat"); 
 
 // equivalent to "dotnet ef database update"
 using var scope = app.Services.CreateScope();

@@ -25,6 +25,7 @@ namespace API.Extensions
             });
 
             // allow all type of requests from our client app
+            // allow credentials header in CORS requests to enable SignalR communication in chat
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>
@@ -32,6 +33,7 @@ namespace API.Extensions
                     policy
                     .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .AllowCredentials()
                     .WithOrigins("http://localhost:3000");
                 });
             });
@@ -56,6 +58,9 @@ namespace API.Extensions
 
             // set up the cloudinary settings
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+
+            // Enable SignalR hubs
+            services.AddSignalR();
 
             return services;
         }
