@@ -95,6 +95,9 @@ const Profiles = {
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
 
   update: (profile: Partial<Profile>) => requests.put<void>("/profiles", profile),
+  updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
+  listFollowing: (username: string, predicate: string) =>
+    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
   
   // needed a payload to put the blob and perform the request
   uploadPhoto: (file: Blob) => {

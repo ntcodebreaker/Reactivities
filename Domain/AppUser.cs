@@ -19,5 +19,13 @@ namespace Domain
         // Used by EF in migrations to configure a 
         // relationship one-to-many between AppUser and Photos
         public ICollection<Photo> Photos { get; set; }
+
+        // Used by EF in migrations to configure a 
+        // relationship one-to-many between AppUser and the people he follows
+        public ICollection<UserFollowing> Followings { get; set; }
+
+        // Used by EF in migrations to configure a 
+        // relationship one-to-many between AppUser and his followers
+        public ICollection<UserFollowing> Followers { get; set; }
     }
 }

@@ -201,4 +201,20 @@ export default class ActivityStore {
   clearSelectedActivity = () => {
     this.selectedActivity = undefined;
   }
+
+  /**
+   * toggle between follow and unfollow a given profile
+   * and synchronize in every attendee across all activities 
+   * (attendee is also a profile)
+   */
+  updateAttendeeFollowing = (username: string) => {
+    this.activityRegistry.forEach(activity => {
+      activity.attendees.forEach(attendee => {
+        if (attendee.userName === username) {
+          attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+          attendee.following = !attendee.following;
+        }
+      })
+    })
+  }
 }

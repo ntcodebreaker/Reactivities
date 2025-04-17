@@ -2,6 +2,7 @@
  * Query class to return the profile of a user
  */
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -21,8 +22,11 @@ namespace Application.Profiles
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
             }
@@ -31,7 +35,8 @@ namespace Application.Profiles
                 CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                    .ProjectTo<Profile>(_mapper.ConfigurationProvider)
+                    .ProjectTo<Profile>(_mapper.ConfigurationProvider,
+                        new { currentUserName = _userAccessor.GetUsername() })
                     .SingleOrDefaultAsync(u => u.UserName == request.Username);
 
                 return Result<Profile>.Success(user);
