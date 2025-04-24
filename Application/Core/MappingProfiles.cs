@@ -6,12 +6,12 @@
 
 using Application.Activities;
 using Application.Comments;
-using AutoMapper;
+using Application.Profiles;
 using Domain;
 
 namespace Application.Core
 {
-    public class MappingProfiles : Profile
+    public class MappingProfiles : AutoMapper.Profile
     {
         public MappingProfiles()
         {
@@ -45,6 +45,16 @@ namespace Application.Core
                 .ForMember(d => d.FollowingCount, o => o.MapFrom(s => s.AppUser.Followings.Count))
                 .ForMember(d => d.Following,
                     o => o.MapFrom(s => s.AppUser.Followers.Any(x => x.Observer.UserName == currentUserName)));
+
+            CreateMap<ActivityAttendee, UserActivityDto>()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.Activity.Id))
+                .ForMember(d => d.Title, o => o.MapFrom(s => s.Activity.Title))
+                .ForMember(d => d.Category, o => o.MapFrom(s => s.Activity.Category))
+                .ForMember(d => d.Date, o => o.MapFrom(s => s.Activity.Date))
+                .ForMember(d => d.HostUsername,
+                    o => o.MapFrom(s => s.Activity.Attendees.FirstOrDefault(
+                        a => a.IsHost).AppUser.UserName))
+                ;
 
             /*
              * get the image for the Profile object by navigating to 

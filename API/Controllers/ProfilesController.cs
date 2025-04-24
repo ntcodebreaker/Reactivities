@@ -11,6 +11,16 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new Details.Query { Username = username }));
         }
 
+        [HttpGet("{username}/activities")]
+        public async Task<IActionResult> ListActivities(string username, string predicate)
+        {
+            return HandleResult(await Mediator.Send(new ListActivities.Query
+            {
+                Username = username,
+                Predicate = predicate
+            }));
+        }
+
         /// <summary>
         /// we can send a CQRS command directly to endpoints
         /// the asp net binding mechanism will map the request data
